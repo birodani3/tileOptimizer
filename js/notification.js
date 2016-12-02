@@ -10,22 +10,26 @@ APP.notification = (function() {
     };
 
     function error(msg) {
-        var toastElem = $("#toast");
+        var toastElem = $("<div id='toast'</div>");
         toastElem.text(msg);
         toastElem.addClass("show error");
 
+        $(".content").append(toastElem);
+
         setTimeout(function() {
-            toastElem.removeClass("show error");
+            toastElem.remove();
         }, duration);
     }
 
     function message(msg) {
-        var toastElem = $("#toast");
+        var toastElem = $("<div id='toast'</div>");
         toastElem.text(msg);
         toastElem.addClass("show");
 
+        $(".content").append(toastElem);
+
         setTimeout(function() {
-            toastElem.removeClass("show");
+            toastElem.remove();
         }, duration);
     }
 

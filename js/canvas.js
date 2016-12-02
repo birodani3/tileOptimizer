@@ -61,8 +61,4 @@ APP.canvas = (function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    function getRandomColor() {
-        return colors[Math.floor(Math.random() * 216)];
-    }
-
 })();
