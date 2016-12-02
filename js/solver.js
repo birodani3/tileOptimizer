@@ -7,6 +7,7 @@ APP.solver = (function() {
     var SIZEY;
     var tiles;    
     var stateStack = [];
+    var reseting = false;
 
     var _callback;
 
@@ -15,6 +16,7 @@ APP.solver = (function() {
     };
 
     function reset() {
+        reseting = true;
         currentType = 0;
         stateStack = [];
     }
@@ -27,16 +29,22 @@ APP.solver = (function() {
 
         tiles = inputTiles;
         _callback = callback;
-        _solve();
+
+        requestAnimationFrame(function() {
+            reseting = false;
+            _solve();
+        });
     }
 
     function _solve() {
+        if (reseting) return;
+
         var result = step();
 
         if (result === APP.runStates.RUNNING) {
             requestAnimationFrame(_solve);
         } else {
-            _callback(result);
+            _callback && _callback(result);
         }
     }
 
