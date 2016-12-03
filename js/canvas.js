@@ -25,7 +25,8 @@ APP.canvas = (function() {
         init: init,
         setSize: setSize,
         draw: draw,
-        clear: clear
+        clear: clear,
+        fade: fade
     };
 
     function init() {
@@ -54,6 +55,11 @@ APP.canvas = (function() {
                 }
             });
         });
+    }
+
+    function fade() {
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     function clear() {

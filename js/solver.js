@@ -30,6 +30,8 @@ APP.solver = (function() {
         tiles = inputTiles;
         _callback = callback;
 
+        APP.canvas.draw(tiles);
+
         requestAnimationFrame(function() {
             reseting = false;
             _solve();
@@ -108,7 +110,7 @@ APP.solver = (function() {
     function nearbyImpossible(i, j) {
         var m, n, type, impossible;
 
-        var radius = 3;
+        var radius = 2;
 
         for (var k = -radius; k <= radius; k++) {
             for (var l = -radius; l <= radius; l++) {

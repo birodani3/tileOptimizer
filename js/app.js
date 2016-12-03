@@ -38,16 +38,16 @@ var APP = APP || {};
         APP.tiles.setTilesReference(tiles);
         APP.canvas.setSize(SIZEX, SIZEY);
         APP.tiles.addRandomTiles(defaultTiles);
-
         APP.solver.solve({ x: SIZEX, y: SIZEY }, tiles, function done(state) {
             if (state === APP.runStates.DONE) {
                 var elapsed = (new Date().valueOf() - startTime) / 1000;
                 average = ((average * solved) + elapsed) / ++solved;
                 
                 var averageText = (solved > 1) ? (", average: " + average.toFixed(2) + "sec after " + solved + " successful runs") : "";
-                APP.notification.message("Solved in: " + elapsed + "secs" + averageText);
+                APP.notification.message("Solved in " + elapsed + "secs" + averageText);
             } else if (state === APP.runStates.IMPOSSIBLE) {
                 APP.notification.message("Impossible to solve");
+                APP.canvas.fade();
             } else {
                 APP.error("An error occured");
             }
