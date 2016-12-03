@@ -155,8 +155,8 @@ APP.solver = (function() {
         APP.tiles.setTilesReference(tiles);
     }
 
-    function setTile(bestPosition, type) {
-        APP.tiles.setTile(bestPosition.i, bestPosition.j, type);
+    function setTile(position, type) {
+        APP.tiles.setTile(position.i, position.j, type);
 
         APP.canvas.draw(tiles);
     }

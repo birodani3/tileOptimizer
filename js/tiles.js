@@ -18,7 +18,6 @@ APP.tiles = (function() {
         getColor: getColor
     };
 
-
     function setTilesReference(tilesRef) {
         tiles = tilesRef;
         if (size !== tiles.length) {
@@ -124,73 +123,146 @@ APP.tiles = (function() {
         }
     }
 
+    function getColorTo(i, j, type) {
+        var m, n, _color;
+
+        var availableColors = [1, 2, 3, 4, 5, 6, 7];
+        var toCheck = [];
+
+        switch(type) {
+            case 1:
+                toCheck.push.call(toCheck, {x: 0, y: -1}, {x: 1, y: -1}, {x: 2, y: 0}, {x: 2, y: 1}, {x: 1, y: 2}, {x: 0, y: 2}, {x: -1, y: 1}, {x: -1, y: 0});
+                break;
+            case 2:
+                toCheck.push.call(toCheck, {x: -1, y: -1}, {x: 0, y: -1}, {x: 1, y: 0}, {x: 1, y: 11}, {x: 0, y: 2}, {x: -1, y: 2}, {x: -2, y: 1}, {x: -2, y: 0});
+                break;
+            case 3:
+                toCheck.push.call(toCheck, {x: 0, y: -2}, {x: 1, y: -2}, {x: 2, y: -1}, {x: 2, y: 0}, {x: 1, y: 1}, {x: 0, y: 1}, {x: -1, y: 0}, {x: -1, y: -1});
+                break;
+            case 4:
+                toCheck.push.call(toCheck, {x: -1, y: -2}, {x: 0, y: -2}, {x: 1, y: -1}, {x: 1, y: 0}, {x: 0, y: 1}, {x: -1, y: 1}, {x: -2, y: 0}, {x: -2, y: -1});
+                break;
+            case 5:
+                toCheck.push.call(toCheck, {x: 0, y: -1}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 0, y: 2}, {x: -1, y: 1}, {x: -1, y: 0});
+                break;
+            case 6:
+                toCheck.push.call(toCheck, {x: 0, y: -2}, {x: 1, y: -1}, {x: 1, y: 0}, {x: 0, y: 1}, {x: -1, y: 0}, {x: -1, y: -1});
+                break;
+            case 7:
+                toCheck.push.call(toCheck, {x: 0, y: -1}, {x: 1, y: -1}, {x: 2, y: 0}, {x: 1, y: 1}, {x: 0, y: 1}, {x: -1, y: 0});
+                break;
+            case 8:
+                toCheck.push.call(toCheck, {x: -1, y: -1}, {x: 0, y: -1}, {x: 1, y: 0}, {x: 0, y: 1}, {x: -1, y: 1}, {x: -2, y: 0});
+                break;
+        }
+
+        toCheck.forEach(function(check) {
+            m = i + check.x;
+            n = j + check.y;
+
+            if (m < 0 || n < 0 || m >= tiles.length || n >= tiles[0].length) return;
+
+            _color = getColor(m, n);
+
+            if (_color) {
+                availableColors = availableColors.filter(function(color) { 
+                    return color !== _color;
+                });
+            }
+        });
+
+        if (availableColors.length < 2) console.log("available colors length: ", availableColors.length);
+        return availableColors[0]
+    }
+
     function setTile(i, j, t) {
-        var color = Math.floor(Math.random() * 216);
+        var check;
 
         switch (t) {
             case 1: tiles[i][j]=1;
                 tiles[i+1][j]=2;
                 tiles[i][j+1]=3;
                 tiles[i+1][j+1]=4;
-                setColor(i, j, color);
-                setColor(i+1, j, color);
-                setColor(i, j+1, color);
-                setColor(i+1, j+1, color);
                 setEdge(i,j,2,2);
                 break;
             case 2: tiles[i][j]=2;
                 tiles[i-1][j]=1;
                 tiles[i][j+1]=4;
                 tiles[i-1][j+1]=3;
-                setColor(i, j, color);
-                setColor(i-1, j, color);
-                setColor(i, j+1, color);
-                setColor(i-1, j+1, color);
                 setEdge(i-1,j,2,2);
                 break;
             case 3: tiles[i][j]=3;
                 tiles[i+1][j]=4;
                 tiles[i][j-1]=1;
                 tiles[i+1][j-1]=2;
-                setColor(i, j, color);
-                setColor(i+1, j, color);
-                setColor(i, j-1, color);
-                setColor(i+1, j-1, color);
                 setEdge(i,j-1,2,2);
                 break;
             case 4: tiles[i][j]=4;
                 tiles[i-1][j]=3;
                 tiles[i][j-1]=2;
                 tiles[i-1][j-1]=1;
-                setColor(i, j, color);
-                setColor(i-1, j, color);
-                setColor(i, j-1, color);
-                setColor(i-1, j-1, color);
                 setEdge(i-1,j-1,2,2);
                 break;
             case 5: tiles[i][j]=5;
                 tiles[i][j+1]=6;
-                setColor(i, j, color);
-                setColor(i, j+1, color);
                 setEdge(i,j,1,2);
                 break;
             case 6: tiles[i][j]=6;
                 tiles[i][j-1]=5;
-                setColor(i, j, color);
-                setColor(i, j-1, color);
                 setEdge(i,j-1,1,2);
                 break;
             case 7: tiles[i][j]=7;
                 tiles[i+1][j]=8;
-                setColor(i, j, color);
-                setColor(i+1, j, color);
                 setEdge(i,j,2,1);
                 break;
             case 8: tiles[i][j]=8;
                 tiles[i-1][j]=7;
+                setEdge(i-1,j,2,1);
+                break;
+        }
+
+        var color = getColorTo(i, j, t);
+
+         switch (t) {
+            case 1:
+                setColor(i, j, color);
+                setColor(i+1, j, color);
+                setColor(i, j+1, color);
+                setColor(i+1, j+1, color);
+                break;
+            case 2:
                 setColor(i, j, color);
                 setColor(i-1, j, color);
-                setEdge(i-1,j,2,1);
+                setColor(i, j+1, color);
+                setColor(i-1, j+1, color);
+                break;
+            case 3:
+                setColor(i, j, color);
+                setColor(i+1, j, color);
+                setColor(i, j-1, color);
+                setColor(i+1, j-1, color);
+                break;
+            case 4:
+                setColor(i, j, color);
+                setColor(i-1, j, color);
+                setColor(i, j-1, color);
+                setColor(i-1, j-1, color);
+                break;
+            case 5:
+                setColor(i, j, color);
+                setColor(i, j+1, color);
+                break;
+            case 6:
+                setColor(i, j, color);
+                setColor(i, j-1, color);
+                break;
+            case 7:
+                setColor(i, j, color);
+                setColor(i+1, j, color);
+                break;
+            case 8:
+                setColor(i, j, color);
+                setColor(i-1, j, color);
         }
     }
 

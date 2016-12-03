@@ -5,21 +5,10 @@ APP.canvas = (function() {
     var canvas;
     var ctx;
     var tileSize = 20;
-    var colors = (function() {
-        var colors = [];
-
-        var arr = ['00', '33', '66', '99', 'cc', 'ff'];
-
-        for (var i = 0; i < 216; i++) {
-            var a = i % 6;
-            var b = Math.floor(i / 6) % 6;
-            var c = Math.floor(i / 36) % 6;
-
-            colors.push("#" + arr[a] + arr[b] + arr[c]);
-        }
-
-        return colors;
-    })();
+    var colors = [
+        "#808080", "#FF0000", "#FFFF00", "#008000", "#00FF00",
+        "#008080", "#00FFFF", "#000080"
+    ];
 
     return {
         init: init,
