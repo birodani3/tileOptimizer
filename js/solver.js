@@ -51,7 +51,7 @@ APP.solver = (function() {
     }
 
     function step() {
-        var i, j, type, count, state, possibleCount, bestPosition;
+        var i, j, type, count, possibleCount, bestPosition;
 
         count = 0;
 
@@ -92,7 +92,7 @@ APP.solver = (function() {
                     saveCurrentState(tiles, type);
                     setTile(bestPosition, type);
                    
-                    if (nearbyImpossible(i, j)) {
+                    if (nearbyImpossible(bestPosition.i, bestPosition.j)) {
                         restoreLastState();
                         return APP.runStates.RUNNING;
                     }
@@ -110,7 +110,7 @@ APP.solver = (function() {
     function nearbyImpossible(i, j) {
         var m, n, type, impossible;
 
-        var radius = 2;
+        var radius = 4;
 
         for (var k = -radius; k <= radius; k++) {
             for (var l = -radius; l <= radius; l++) {
@@ -120,18 +120,20 @@ APP.solver = (function() {
                 n = j + l;
 
                 if (m < 0 || l < 0 || m >= tiles.length || n >= tiles[0].length) continue;
-                if (tiles[m][n] !== -1) continue;
+                if (tiles[m][n] > 0) continue;
 
                 impossible = true;
 
-                for (type = 0; type < TYPES; type++) {
-                    if (APP.tiles.isPossible(m, n, type)) {
+                for (type = 1; type <= TYPES; type++) {
+                    if (APP.tiles.possible(m, n, type)) {
                         impossible = false;
                         break;
                     }
                 }
 
-                if (impossible) return true;
+                if (impossible) {
+                    return true;
+                }
             }
         }
 
