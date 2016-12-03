@@ -63,8 +63,6 @@ APP.solver = (function() {
                 possibleCount = 0;
 
                 for (type = 1; type <= TYPES; type++) {
-                    if (type <= currentType) continue;
-                    
                     if (APP.tiles.possible(i, j, type)) {
                         possibleCount++;
                     }
@@ -99,6 +97,12 @@ APP.solver = (function() {
                     
                     return APP.runStates.RUNNING;
                 }
+            }
+
+            if (stateStack.length) {
+                restoreLastState();
+
+                return APP.runStates.RUNNING;
             }
         } else if (count == 0) {
             return APP.runStates.DONE;

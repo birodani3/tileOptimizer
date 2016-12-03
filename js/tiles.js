@@ -171,7 +171,6 @@ APP.tiles = (function() {
             }
         });
 
-        if (availableColors.length < 2) console.log("available colors length: ", availableColors.length);
         return availableColors[0]
     }
 
