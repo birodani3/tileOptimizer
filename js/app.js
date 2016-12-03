@@ -49,7 +49,7 @@ var APP = APP || {};
                 APP.notification.message("Impossible to solve");
                 APP.canvas.fade();
             } else {
-                APP.error("An error occured");
+                APP.notification.error("An error occured");
             }
         });
     }

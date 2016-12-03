@@ -103,6 +103,8 @@ APP.solver = (function() {
                 restoreLastState();
 
                 return APP.runStates.RUNNING;
+            } else {
+                return APP.runStates.IMPOSSIBLE;
             }
         } else if (count == 0) {
             return APP.runStates.DONE;
